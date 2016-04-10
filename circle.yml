@@ -1,11 +1,17 @@
 machine:
     services:
     - docker
-
 dependencies:
-        - docker build -t dilgerm/influxdb:0.12 . 
+     override:
+        - docker build -t dilgerm/influxdb:0.12 .
+        - docker build -t dilgerm/influxdb:latest . 
+test:
+  override:
+    - echo "test"
 deployment:
   hub:
     branch: master
     commands:
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+      - docker push dilgerm/influxdb:0.12
+      - docker push dilgerm/influxdb:latest
